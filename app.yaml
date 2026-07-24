@@ -1,0 +1,22 @@
+kind: wasmer.io/App.v0
+owner: WoompaLoompa
+name: prestashop
+package: .
+
+scaling:
+  mode: single_concurrency
+
+capabilities:
+  database:
+    engine: mysql
+  instaboot:
+    requests:
+      - path: /
+
+locality:
+  regions:
+    - us-socal1
+
+env:
+  ADMIN_MAIL: "admin@example.com"
+  ADMIN_PASSWD: "Pr3st4Sh0P"
