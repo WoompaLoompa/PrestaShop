@@ -15,7 +15,7 @@ capabilities:
 
 locality:
   regions:
-    - us-socal1
+    - fr-roub1
 
 env:
   ADMIN_MAIL: "admin@example.com"
