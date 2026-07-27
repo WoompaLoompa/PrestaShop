@@ -1,0 +1,45 @@
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWD}
+      MYSQL_DATABASE: ${DB_NAME:-prestashop}
+    networks:
+      - prestashop-network
+
+  prestashop:
+    image: prestashop/prestashop:8.1-apache
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      DB_SERVER: mysql
+      DB_USER: root
+      DB_PASSWD: ${DB_PASSWD}
+      DB_NAME: ${DB_NAME:-prestashop}
+      DB_PREFIX: ${DB_PREFIX:-ps_}
+      PS_DOMAIN: ${PS_DOMAIN}
+      PS_FOLDER_INSTALL: install-dev
+      PS_FOLDER_ADMIN: admin-dev
+      PS_COUNTRY: ${PS_COUNTRY:-fr}
+      PS_LANGUAGE: ${PS_LANGUAGE:-en}
+      PS_DEV_MODE: ${PS_DEV_MODE:-0}
+      PS_ENABLE_SSL: ${PS_ENABLE_SSL:-0}
+      PS_INSTALL_AUTO: ${PS_INSTALL_AUTO:-1}
+      PS_ERASE_DB: ${PS_ERASE_DB:-0}
+      ADMIN_MAIL: ${ADMIN_MAIL}
+      ADMIN_PASSWD: ${ADMIN_PASSWD}
+    volumes:
+      - ps-data:/var/www/html
+    networks:
+      - prestashop-network
+
+volumes:
+  db-data:
+  ps-data:
+
+networks:
+  prestashop-network:
